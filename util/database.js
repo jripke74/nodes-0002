@@ -10,9 +10,9 @@ const mongoConnect = () => {
     `mongodb+srv://jeff:${secrets.mongoDbPassword}@cluster0.delsao3.mongodb.net/shop?retryWrites=true&w=majority`
   )
     .then((client) => {
-      console.log("Connected!!!");
+      console.log("Connected!!!", client);
       _db = client.db();
-      callback();
+      // callback();
     })
     .catch((err) => {
       console.log(err);
