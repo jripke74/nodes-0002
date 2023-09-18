@@ -7,24 +7,26 @@ class Product {
     this.price = price;
     this.description = description;
     this.imageUrl = imageUrl;
-    this._id = id;
+    this._id = new mongodb.ObjectId(id);
   }
 
   save() {
+    console.log("model product: save()");
     const db = getDb();
     let dbOp;
-    if (this._id) {
-      dbOp = db
-        .collection("products")
-        .updateOne({ _id: new mongodb.ObjectId(this._id) }, { $set: this });
-    } else {
-      dbOp = db
-        .collection("products")
-        .insertOne({ _id: db.collection("products").insertOne(this) });
-    }
+    // if (this._id) {
+    //   console.log("model product: save() if", this._id);
+    //   dbOp = db
+    //     .collection("products")
+    //     .updateOne({ _id: this._id }, { $set: this });
+    // } else {
+    //   console.log("model product: save() else");
+    //   dbOp = db.collection("products").insertOne(this);
+    // }
+    dbOp = db.collection("products").insertOne(this);
     return dbOp
       .then((result) => {
-        console.log(result);
+        // console.log(result);
       })
       .catch((err) => {
         console.log(err);
@@ -38,7 +40,7 @@ class Product {
       .find()
       .toArray()
       .then((products) => {
-        console.log(products);
+        // console.log(products);
         return products;
       })
       .catch((err) => {
@@ -53,7 +55,7 @@ class Product {
       .find({ _id: new mongodb.ObjectId(prodId) })
       .next()
       .then((product) => {
-        console.log(product);
+        // console.log(product);
         return product;
       })
       .catch((err) => {
