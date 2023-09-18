@@ -2,7 +2,7 @@ const { NULL } = require("mysql2/lib/constants/types");
 const Product = require("../models/product");
 
 exports.getAddProduct = (req, res, next) => {
-  console.log("admin controller: getAddProduct()");
+  // console.log("admin controller: getAddProduct()");
   res.render("admin/edit-product", {
     pageTitle: "Add Product",
     path: "/admin/add-product",
@@ -11,18 +11,25 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-  console.log("admin controller: postAddProduct()");
+  // console.log("admin controller: postAddProduct()");
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(title, price, description, imageUrl);
-  console.log("admin controller: postAddProduct() product", product);
+  const product = new Product(
+    title,
+    price,
+    description,
+    imageUrl,
+    null,
+    req.user._id
+  );
+  // console.log("admin controller: postAddProduct() product", product);
   product
     .save()
     .then((result) => {
       // console.log(result);
-      console.log("Created Product");
+      // console.log("Created Product");
       res.redirect("/admin/products");
     })
     .catch((err) => {
@@ -31,7 +38,7 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getEditProduct = (req, res, next) => {
-  console.log("admin controller: getEditProduct()");
+  // console.log("admin controller: getEditProduct()");
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect("/");
@@ -53,7 +60,7 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postEditProduct = (req, res, next) => {
-  console.log("admin controller: postEditProduct()");
+  // console.log("admin controller: postEditProduct()");
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
@@ -77,7 +84,7 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  console.log("admin controller: getProduct()");
+  // console.log("admin controller: getProduct()");
   Product.fetchAll()
     .then((products) => {
       res.render("admin/products", {
@@ -92,9 +99,9 @@ exports.getProducts = (req, res, next) => {
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   Product.deleteById(prodId)
-    .then(result => {
-      console.log('DESTROYED PRODUCT');
-      res.redirect('/admin/products');
+    .then((result) => {
+      console.log("DESTROYED PRODUCT");
+      res.redirect("/admin/products");
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
