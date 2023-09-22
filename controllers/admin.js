@@ -1,4 +1,3 @@
-const { NULL } = require("mysql2/lib/constants/types");
 const Product = require("../models/product");
 
 exports.getAddProduct = (req, res, next) => {
